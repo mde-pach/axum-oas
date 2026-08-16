@@ -1,0 +1,35 @@
+error[E0277]: `Undescribable` cannot be described in the OpenAPI document, so this handler cannot be registered on an `OasRouter`
+  --> tests/ui/undescribable_response.rs:21:67
+   |
+21 |         axum_oas::OasRouter::new().route("/broken", axum_oas::get(handler));
+   |                                                     ------------- ^^^^^^^ this return type is not describable
+   |                                                     |
+   |                                                     required by a bound introduced by this call
+   |
+help: the trait `OperationOutput` is not implemented for `Undescribable`
+  --> tests/ui/undescribable_response.rs:7:1
+   |
+ 7 | struct Undescribable;
+   | ^^^^^^^^^^^^^^^^^^^^
+   = note: axum-oas refuses to silently omit a handler's response from the generated spec (compile-error over silent omission)
+   = note: return `axum::Json<T>` or a typed response like `axum_oas::Ok<T>`, `axum_oas::Created<T>`, or `axum_oas::NoContent`, with `T` deriving `schemars::JsonSchema`
+   = note: or implement `axum_oas::OperationOutput` for `Undescribable` to declare its status codes and body schema yourself
+   = help: the following other types implement trait `OperationOutput`:
+             Created<T>
+             Json<T>
+             Result<T, E>
+             axum_oas::NoContent
+             axum_oas::Ok<T>
+   = note: required for `fn() -> impl Future<Output = Undescribable> {handler}` to implement `OasHandler<((),), _>`
+note: required by a bound in `axum_oas::get`
+  --> src/routing.rs
+   |
+   |             H: Handler<T, S> + OasHandler<T, S>,
+   |                                ^^^^^^^^^^^^^^^^ required by this bound in `get`
+...
+   | top_level_method!(get);
+   | ----------------------
+   | |                 |
+   | |                 required by a bound in this function
+   | in this macro invocation
+   = note: this error originates in the macro `top_level_method` (in Nightly builds, run with -Z macro-backtrace for more info)

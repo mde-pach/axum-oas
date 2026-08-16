@@ -1,0 +1,33 @@
+error[E0277]: `Method` cannot be described in the OpenAPI document, so this handler cannot be registered on an `OasRouter`
+  --> tests/ui/undescribable_extractor.rs:13:67
+   |
+13 |         axum_oas::OasRouter::new().route("/broken", axum_oas::get(handler));
+   |                                                     ------------- ^^^^^^^ this extractor is not describable
+   |                                                     |
+   |                                                     required by a bound introduced by this call
+   |
+   = help: the trait `OperationInput` is not implemented for `Method`
+   = note: axum-oas refuses to silently omit parts of a handler from the generated spec (compile-error over silent omission)
+   = note: for JSON bodies use `axum::Json<T>` and for query strings use `axum::extract::Query<T>`, with `T` deriving `schemars::JsonSchema`
+   = note: for extractors that are not part of the HTTP interface, or your own extractors, implement `axum_oas::OperationInput` (it is a no-op impl for non-HTTP inputs like `State`)
+   = help: the following other types implement trait `OperationInput`:
+             Extension<T>
+             HeaderMap
+             Json<T>
+             Option<T>
+             Query<T>
+             State<S>
+             axum::extract::Path<T>
+   = note: required for `fn(Method) -> impl Future<Output = axum_oas::NoContent> {handler}` to implement `OasHandler<(axum_core::extract::private::ViaParts, Method), _>`
+note: required by a bound in `axum_oas::get`
+  --> src/routing.rs
+   |
+   |             H: Handler<T, S> + OasHandler<T, S>,
+   |                                ^^^^^^^^^^^^^^^^ required by this bound in `get`
+...
+   | top_level_method!(get);
+   | ----------------------
+   | |                 |
+   | |                 required by a bound in this function
+   | in this macro invocation
+   = note: this error originates in the macro `top_level_method` (in Nightly builds, run with -Z macro-backtrace for more info)
