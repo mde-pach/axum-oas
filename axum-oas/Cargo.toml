@@ -1,0 +1,22 @@
+[package]
+name = "axum-oas"
+description = "Zero-duplication OpenAPI 3.1 for axum: the handler is the single source of truth"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+keywords = ["axum", "openapi", "swagger", "documentation"]
+categories = ["web-programming"]
+
+[dependencies]
+axum = { workspace = true }
+schemars = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net"] }
+tower = { version = "0.5", features = ["util"] }
+http-body-util = "0.1"
+trybuild = "1"

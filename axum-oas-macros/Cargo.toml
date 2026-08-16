@@ -1,0 +1,11 @@
+[package]
+name = "axum-oas-macros"
+description = "Proc-macro companion crate for axum-oas (reserved; empty in v0)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[lib]
+proc-macro = true

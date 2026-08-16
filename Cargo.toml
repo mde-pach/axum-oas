@@ -1,0 +1,16 @@
+[workspace]
+members = ["axum-oas", "axum-oas-macros"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/mde-pach/axum-oas"
+rust-version = "1.85"
+
+[workspace.dependencies]
+axum = "0.8.9"
+schemars = "1.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
